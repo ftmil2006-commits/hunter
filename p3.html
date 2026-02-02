@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<body data-page="p3">
+
+<h2>Question 3</h2>
+<div id="timer" style="font-size:18px;color:red"></div>
+<p>
+Five numbers are written on the board.
+Remove the largest and smallest mentally.
+What remains?
+Numbers shown physically:
+11 15 19 17 13
+
+</p>
+
+<input id="ans">
+<button onclick="check()">Submit</button>
+<p id="msg"></p>
+
+<script>
+  function check() {
+  const CORRECT_ANSWER = "15"; // 👈 change per location
+  const user = document.getElementById("ans").value
+               .trim()
+               .toUpperCase();
+
+  if (user === CORRECT_ANSWER) {
+
+    // 🛑 STOP TIMER
+    timerStopped = true;
+    clearInterval(timerInterval);
+
+    // 🔓 DISABLE ALL ANTI-CHEAT PROTECTION
+    disableProtection();
+
+    // ✅ SAVE SUCCESS TO SHEET
+    fetch(${API}?action=solve&team=${team}&page=${PAGE})
+      .then(() => {
+        document.getElementById("msg").innerText =
+          "✅ Correct! Move ahead to the next location parking area and Scan the next Qr.";
+      });
+
+  } else {
+    document.getElementById("msg").innerText = "❌ Wrong answer";
+  }
+}
+</script>
+
+<script src="secure.js"></script>
+</body>
+</html>
+
+

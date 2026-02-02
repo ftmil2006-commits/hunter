@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<body data-page="p4">
+
+<h2>Question 4</h2>
+<div id="timer" style="font-size:18px;color:red"></div>
+<p>
+You are blocked by vehicles in front of you.
+
+Only one direction is possible.
+
+What rule decides who leaves first?
+</p>
+
+<input id="ans">
+<button onclick="check()">Submit</button>
+<p id="msg"></p>
+
+<script>
+
+  function check() {
+  const CORRECT_ANSWER = "Stack"; // 👈 change per location
+  const user = document.getElementById("ans").value
+               .trim()
+               .toUpperCase();
+
+  if (user === CORRECT_ANSWER) {
+
+    // 🛑 STOP TIMER
+    timerStopped = true;
+    clearInterval(timerInterval);
+
+    // 🔓 DISABLE ALL ANTI-CHEAT PROTECTION
+    disableProtection();
+
+    // ✅ SAVE SUCCESS TO SHEET
+    fetch(${API}?action=solve&team=${team}&page=${PAGE})
+      .then(() => {
+        document.getElementById("msg").innerText =
+          "✅ Correct! move to the location of next Qr and its to find NSS room ";
+      });
+
+  } else {
+    document.getElementById("msg").innerText = "❌ Wrong answer";
+  }
+}
+</script>
+
+<script src="secure.js"></script>
+</body>
+</html>
+
+

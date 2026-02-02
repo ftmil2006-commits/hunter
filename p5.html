@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<body data-page="p5">
+
+<h2>Question 5</h2>
+<div id="timer" style="font-size:18px;color:red"></div>
+<p>
+NSS helps when something goes wrong.
+
+In programming, what handles errors when normal execution fails?
+</p>
+
+<input id="ans">
+<button onclick="check()">Submit</button>
+<p id="msg"></p>
+
+<script>
+
+  function check() {
+  const CORRECT_ANSWER = "Exception"; // 👈 change per location
+  const user = document.getElementById("ans").value
+               .trim()
+               .toUpperCase();
+
+  if (user === CORRECT_ANSWER) {
+
+    // 🛑 STOP TIMER
+    timerStopped = true;
+    clearInterval(timerInterval);
+
+    // 🔓 DISABLE ALL ANTI-CHEAT PROTECTION
+    disableProtection();
+
+    // ✅ SAVE SUCCESS TO SHEET
+    fetch(${API}?action=solve&team=${team}&page=${PAGE})
+      .then(() => {
+        document.getElementById("msg").innerText =
+          "✅ Correct! move to the location of next Qr and search near or in the Library"";
+      });
+
+  } else {
+    document.getElementById("msg").innerText = "❌ Wrong answer";
+  }
+}
+</script>
+
+<script src="secure.js"></script>
+</body>
+</html>
+
+

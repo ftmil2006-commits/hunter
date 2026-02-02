@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<body data-page="p2">
+
+<h2>Question 2</h2>
+<div id="timer" style="font-size:18px;color:red"></div>
+<p>
+Observe carefully.
+Entry and exit never cross paths.
+What rule guarantees this order?
+
+</p>
+
+<input id="ans">
+<button onclick="check()">Submit</button>
+<p id="msg"></p>
+
+<script>
+  function check() {
+  const correct = "Queue"||"queue";
+  const user = document.getElementById("ans").value.trim().toUpperCase();
+
+  if (user === correct) {
+    timerStopped = true;
+    clearInterval(timerInterval);
+
+    fetch(${API}?action=solve&team=${team}&page=${PAGE})
+      .then(() => {
+        document.getElementById("msg").innerText =
+          "✅ Correct! Move ahead to the statistic Department and Scan the next Qr..";
+      });
+  } else {
+    document.getElementById("msg").innerText = "❌ Wrong answer";
+  }
+}
+</script>
+
+<script src="secure.js"></script>
+</body>
+</html>
+
+

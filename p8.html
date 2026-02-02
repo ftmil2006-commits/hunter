@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<body data-page="p8">
+
+<h2>Question 8</h2>
+<div id="timer" style="font-size:18px;color:red"></div>
+<p>
+While climbing stairs, you repeat the same action until you stop.
+
+In programming, what do we call a function that keeps calling itself until a base condition is reached?
+</p>
+
+<input id="ans">
+<button onclick="check()">Submit</button>
+<p id="msg"></p>
+
+<script>
+
+  function check() {
+  const CORRECT_ANSWER = "Recursion"||"recursion; // 👈 change per location
+  const user = document.getElementById("ans").value
+               .trim()
+               .toUpperCase();
+
+  if (user === CORRECT_ANSWER) {
+
+    // 🛑 STOP TIMER
+    timerStopped = true;
+    clearInterval(timerInterval);
+
+    // 🔓 DISABLE ALL ANTI-CHEAT PROTECTION
+    disableProtection();
+
+    // ✅ SAVE SUCCESS TO SHEET
+    fetch(${API}?action=solve&team=${team}&page=${PAGE})
+      .then(() => {
+        document.getElementById("msg").innerText =
+          "✅ Correct! The next Qr is near or in  the quadrangle stage , go search for it their";
+      });
+
+  } else {
+    document.getElementById("msg").innerText = "❌ Wrong answer";
+  }
+}
+</script>
+
+<script src="secure.js"></script>
+</body>
+</html>
+
+

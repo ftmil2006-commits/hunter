@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<body data-page="p1">
+
+<h2>Question 1</h2>
+
+<!-- TIMER -->
+<div id="timer" style="font-size:18px;color:red"></div>
+
+<!-- QUESTION -->
+<p>
+This board exists to reduce repeated work and speed up processes.
+In a computer, what does the same job without storing everything permanently?
+</p>
+
+<!-- INPUT -->
+<input id="ans" placeholder="Answer">
+<button onclick="check()">Submit</button>
+
+<!-- MESSAGE -->
+<p id="msg"></p>
+
+<script>
+const solvedKey = "solved_p1";
+
+// Lock page if already solved
+if (localStorage.getItem(solvedKey) === "true") {
+  ans.disabled = true;
+  document.querySelector("button").disabled = true;
+  msg.innerText = "✅ Answer already accepted. Go to the next location.";
+}
+
+function check() {
+  const CORRECT_ANSWER =  "CACHE"||"cache"; // 👈 change per location
+  const user = document.getElementById("ans").value
+               .trim()
+               .toUpperCase();
+
+  if (user === CORRECT_ANSWER) {
+
+    // 🛑 STOP TIMER
+    timerStopped = true;
+    clearInterval(timerInterval);
+
+    // 🔓 DISABLE ALL ANTI-CHEAT PROTECTION
+    disableProtection();
+
+    // ✅ SAVE SUCCESS TO SHEET
+    fetch(${API}?action=solve&team=${team}&page=${PAGE})
+      .then(() => {
+        document.getElementById("msg").innerText =
+          "✅ Correct! Go to quadrangle and search for the next QR.";
+      });
+
+  } else {
+    document.getElementById("msg").innerText = "❌ Wrong answer";
+  }
+}
+</script>
+
+<!-- GLOBAL JS -->
+<script src="secure.js"></script>
+
+</body>
+</html>
+
+
+
+

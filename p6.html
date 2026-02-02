@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<body data-page="p6">
+
+<h2>Question 6</h2>
+<div id="timer" style="font-size:18px;color:red"></div>
+<p>
+A library arranges books so that searching is faster than checking one by one.
+
+Which data structure does this?
+</p>
+
+<input id="ans">
+<button onclick="check()">Submit</button>
+<p id="msg"></p>
+
+<script>
+
+
+  function check() {
+  const CORRECT_ANSWER = "Tree"; // 👈 change per location
+  const user = document.getElementById("ans").value
+               .trim()
+               .toUpperCase();
+
+  if (user === CORRECT_ANSWER) {
+
+    // 🛑 STOP TIMER
+    timerStopped = true;
+    clearInterval(timerInterval);
+
+    // 🔓 DISABLE ALL ANTI-CHEAT PROTECTION
+    disableProtection();
+
+    // ✅ SAVE SUCCESS TO SHEET
+    fetch(${API}?action=solve&team=${team}&page=${PAGE})
+      .then(() => {
+        document.getElementById("msg").innerText =
+          "✅ Correct! The next Qr is in the chemistry lab.";
+      });
+
+  } else {
+    document.getElementById("msg").innerText = "❌ Wrong answer";
+  }
+}
+
+</script>
+
+<script src="secure.js"></script>
+</body>
+</html>
+
+
+

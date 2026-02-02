@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Enter Team ID</title>
+</head>
+<body>
+
+<h2>Enter Team ID</h2>
+
+<input id="tid" placeholder="Team ID">
+<button onclick="start()">Verify Team</button>
+
+<p id="msg"></p>
+
+<script>
+const API = "https://script.google.com/macros/s/AKfycbwwOhhkig1m-JXJ1XFEt6socZENmHbxD6jUj6XZzqxq46_LYSoAxaQuODTrYOjHCNfWWw/exec";
+
+function start() {
+  const team = document.getElementById("tid").value.trim().toUpperCase();
+  if (!team) return;
+
+  fetch(`${API}?action=check&team=${team}`)
+    .then(r => r.text())
+    .then(status => {
+      if (status === "ACTIVE") {
+        localStorage.setItem("team", team); // 🔒 lock team
+
+        document.getElementById("msg").innerHTML =
+          "✅ <b>Good to go!</b><br>Please scan the QR at <b>Location 1</b> to start.";
+
+      } else {
+        document.getElementById("msg").innerText =
+          "❌ Invalid or Disqualified Team";
+      }
+    });
+}
+</script>
+
+</body>
+</html>
