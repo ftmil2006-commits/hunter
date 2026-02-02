@@ -1,7 +1,7 @@
 /******* CONFIG *******/
 const API = "https://script.google.com/macros/s/AKfycbwwOhhkig1m-JXJ1XFEt6socZENmHbxD6jUj6XZzqxq46_LYSoAxaQuODTrYOjHCNfWWw/exec";
-const PAGE = document.body.getAttribute("data-page"); // p1, p2...
-const TIME_LIMIT = 4 * 60; // ⏱️ 4 minutes per page
+const PAGE = document.body.getAttribute("data-page");
+const TIME_LIMIT = 4 * 60; // 4 minutes
 
 /******* TEAM LOAD *******/
 let team = localStorage.getItem("team");
@@ -20,24 +20,24 @@ if (!device) {
 
 /******* DISQUALIFY FUNCTION *******/
 function disqualify(reason) {
-  fetch(${API}?action=disqualify&team=${team}&page=${PAGE}&reason=${reason});
+  fetch(`${API}?action=disqualify&team=${team}&page=${PAGE}&reason=${reason}`);
   document.body.innerHTML = "<h1>❌ DISQUALIFIED</h1>";
   throw new Error("Disqualified");
 }
 
 /******* STATUS CHECK *******/
-fetch(${API}?action=check&team=${team})
+fetch(`${API}?action=check&team=${team}`)
   .then(r => r.text())
   .then(status => {
     if (status !== "ACTIVE") disqualify("STATUS");
   });
 
 /******* CONNECT DEVICE *******/
-fetch(${API}?action=connect&team=${team}&device=${device}&page=${PAGE});
+fetch(`${API}?action=connect&team=${team}&device=${device}&page=${PAGE}`);
 
 /******* HEARTBEAT *******/
 setInterval(() => {
-  fetch(${API}?action=heartbeat&team=${team}&device=${device});
+  fetch(`${API}?action=heartbeat&team=${team}&device=${device}`);
 }, 10000);
 
 /******* PROTECTION *******/
@@ -69,7 +69,6 @@ function enableProtection() {
 
 function disableProtection() {
   protectionActive = false;
-
   document.removeEventListener("contextmenu", window._ctx);
   document.removeEventListener("selectstart", window._sel);
   document.removeEventListener("copy", window._copy);
@@ -77,28 +76,38 @@ function disableProtection() {
   document.removeEventListener("visibilitychange", window._vis);
 }
 
-/******* TIMER + AUTO-SKIP *******/
+/******* TIMER + AUTO-SKIP (SAFE) *******/
 let timeLeft = TIME_LIMIT;
 let timerStopped = false;
-const timerEl = document.getElementById("timer");
+let timerInterval;
 
-const timerInterval = setInterval(() => {
-  if (timerStopped) return;
-
-  timeLeft--;
-  if (timerEl) timerEl.innerText = ⏳ Time left: ${timeLeft}s;
-
-  if (timeLeft <= 0) {
-    clearInterval(timerInterval);
-    autoSkip();
+window.addEventListener("load", () => {
+  const timerEl = document.getElementById("timer");
+  if (!timerEl) {
+    console.warn("Timer element missing");
+    return;
   }
-}, 1000);
+
+  timerEl.innerText = `⏳ Time left: ${timeLeft}s`;
+
+  timerInterval = setInterval(() => {
+    if (timerStopped) return;
+
+    timeLeft--;
+    timerEl.innerText = `⏳ Time left: ${timeLeft}s`;
+
+    if (timeLeft <= 0) {
+      clearInterval(timerInterval);
+      autoSkip();
+    }
+  }, 1000);
+
+  enableProtection();
+});
 
 function autoSkip() {
-  // stop protection so no accidental DQ during transition
   disableProtection();
-
-  fetch(${API}?action=skip&team=${team}&page=${PAGE})
+  fetch(`${API}?action=skip&team=${team}&page=${PAGE}`)
     .then(() => {
       document.body.innerHTML = `
         <h1>⏭️ Time Up</h1>
@@ -107,14 +116,9 @@ function autoSkip() {
     });
 }
 
-/******* PUBLIC HELPERS FOR pX.html *******/
+/******* PUBLIC HELPER *******/
 function onSolveSuccess() {
   timerStopped = true;
   clearInterval(timerInterval);
   disableProtection();
 }
-
-/******* START PROTECTION ON LOAD *******/
-window.addEventListener("load", () => {
-  enableProtection();
-});
