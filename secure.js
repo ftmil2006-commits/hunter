@@ -1,7 +1,7 @@
 /******* CONFIG *******/
 const API = "https://script.google.com/macros/s/AKfycbwwOhhkig1m-JXJ1XFEt6socZENmHbxD6jUj6XZzqxq46_LYSoAxaQuODTrYOjHCNfWWw/exec";
 const PAGE = document.body.getAttribute("data-page");
-const TIME_LIMIT = 5 * 60; // 4 minutes
+const TIME_LIMIT = 4 * 60; // 4 minutes
 
 /******* TEAM LOAD *******/
 let team = localStorage.getItem("team");
@@ -122,4 +122,5 @@ function onSolveSuccess() {
   clearInterval(timerInterval);
   disableProtection();
 }
+
 
