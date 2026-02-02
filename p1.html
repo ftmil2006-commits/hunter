@@ -25,28 +25,28 @@ const solvedKey = "solved_p1";
 
 // Lock page if already solved
 if (localStorage.getItem(solvedKey) === "true") {
-  ans.disabled = true;
+  document.getElementById("ans").disabled = true;
   document.querySelector("button").disabled = true;
-  msg.innerText = "✅ Answer already accepted. Go to the next location.";
+  document.getElementById("msg").innerText =
+    "✅ Answer already accepted. Go to the next location.";
 }
 
 function check() {
-  const CORRECT_ANSWER =  "CACHE"||"cache"; // 👈 change per location
+  const CORRECT_ANSWER = "CACHE";
   const user = document.getElementById("ans").value
-               .trim()
-               .toUpperCase();
+    .trim()
+    .toUpperCase();
 
   if (user === CORRECT_ANSWER) {
 
-    // 🛑 STOP TIMER
-    timerStopped = true;
-    clearInterval(timerInterval);
+    // ✅ stop timer + protection safely
+    onSolveSuccess();
 
-    // 🔓 DISABLE ALL ANTI-CHEAT PROTECTION
-    disableProtection();
+    // save solved status locally
+    localStorage.setItem(solvedKey, "true");
 
-    // ✅ SAVE SUCCESS TO SHEET
-    fetch(${API}?action=solve&team=${team}&page=${PAGE})
+    // update Google Sheet
+    fetch(`${API}?action=solve&team=${team}&page=${PAGE}`)
       .then(() => {
         document.getElementById("msg").innerText =
           "✅ Correct! Go to quadrangle and search for the next QR.";
@@ -58,12 +58,8 @@ function check() {
 }
 </script>
 
-<!-- GLOBAL JS -->
+<!-- GLOBAL SECURITY + TIMER -->
 <script src="secure.js"></script>
 
 </body>
 </html>
-
-
-
-
