@@ -29,9 +29,6 @@ Which data structure does this?
     timerStopped = true;
     clearInterval(timerInterval);
 
-    // 🔓 DISABLE ALL ANTI-CHEAT PROTECTION
-    disableProtection();
-
     // ✅ SAVE SUCCESS TO SHEET
     fetch(${API}?action=solve&team=${team}&page=${PAGE})
       .then(() => {
@@ -46,9 +43,9 @@ Which data structure does this?
 
 </script>
 
-<script src="/hunter/secure.js"></script>
 </body>
 </html>
+
 
 
 
